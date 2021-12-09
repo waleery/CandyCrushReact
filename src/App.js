@@ -80,6 +80,15 @@ const App = () => {
     }
   };
 
+  const moveIntoSquareBelow = () => {
+    for (let i = 0; i < 64 - width; i++) {
+      if (currentColorArrangement[i + width] === "") {
+        currentColorArrangement[i+width] = currentColorArrangement[i]
+        currentColorArrangement[i] = ''
+      }
+    }
+  };
+
   const createBoard = () => {
     const randomColorArrangment = [];
 
@@ -101,13 +110,14 @@ const App = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       checkForColumnOfFour();
-      checkForRowOfFour()
+      checkForRowOfFour();
       checkForColumnOfThree();
       checkForRowOfThree();
-      setCurrentColorArrangement([...currentColorArrangement]); 
-    }, 100);
+      moveIntoSquareBelow()
+      setCurrentColorArrangement([...currentColorArrangement]);
+    }, 500);
     return () => clearInterval(timer);
-  }, [checkForColumnOfFour, checkForColumnOfThree, checkForRowOfFour, checkForRowOfThree, currentColorArrangement]);
+  }, [checkForColumnOfFour, checkForColumnOfThree, checkForRowOfFour, checkForRowOfThree, currentColorArrangement, moveIntoSquareBelow]);
 
   console.log(currentColorArrangement);
 
