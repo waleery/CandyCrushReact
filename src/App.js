@@ -5,6 +5,15 @@ const candyColors = ['blue', 'green', 'orange', 'purple', 'red', 'yellow']
 const App = () => {
   const [currentColorArrangement,setCurrentColorArrangement] = useState([])
 
+  const checkForColumnOfThree = () =>{
+    for(let i=0; i<47 ; i++){
+      
+    }
+  }
+  
+  
+  
+  
   const createBoard = () => {
     const randomColorArrangment = []
 
@@ -24,7 +33,17 @@ const App = () => {
   console.log(currentColorArrangement)
 
   return (
-    <div></div>
+    <div className="app">
+      <div className="game">
+        {currentColorArrangement.map((candyColor, index) => (
+          <img
+            key= {index}
+            style= {{backgroundColor: candyColor}}
+            alt = {candyColor}
+            />
+        ))}
+      </div>
+    </div>
   );
 }
 
