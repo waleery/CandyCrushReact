@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 const width = 8;
 const candyColors = ["blue", "green", "orange", "purple", "red", "yellow"];
@@ -82,9 +83,20 @@ const App = () => {
 
   const moveIntoSquareBelow = () => {
     for (let i = 0; i < 64 - width; i++) {
+      const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
+      const isFirstRow = firstRow.includes(i);
+
+      if (isFirstRow && currentColorArrangement[i] === "") {
+        const randomNumberFrom0to5 = Math.floor(
+          Math.random() * candyColors.length
+        );
+        console.log(randomNumberFrom0to5)
+        currentColorArrangement[i] = candyColors[randomNumberFrom0to5];
+      }
+
       if (currentColorArrangement[i + width] === "") {
-        currentColorArrangement[i+width] = currentColorArrangement[i]
-        currentColorArrangement[i] = ''
+        currentColorArrangement[i + width] = currentColorArrangement[i];
+        currentColorArrangement[i] = "";
       }
     }
   };
@@ -113,11 +125,18 @@ const App = () => {
       checkForRowOfFour();
       checkForColumnOfThree();
       checkForRowOfThree();
-      moveIntoSquareBelow()
+      moveIntoSquareBelow();
       setCurrentColorArrangement([...currentColorArrangement]);
     }, 500);
     return () => clearInterval(timer);
-  }, [checkForColumnOfFour, checkForColumnOfThree, checkForRowOfFour, checkForRowOfThree, currentColorArrangement, moveIntoSquareBelow]);
+  }, [
+    checkForColumnOfFour,
+    checkForColumnOfThree,
+    checkForRowOfFour,
+    checkForRowOfThree,
+    currentColorArrangement,
+    moveIntoSquareBelow,
+  ]);
 
   console.log(currentColorArrangement);
 
