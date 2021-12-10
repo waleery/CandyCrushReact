@@ -7,6 +7,7 @@ import purpleCandy from './images/purple-candy.png'
 import redCandy from './images/red-candy.png'
 import yellowCandy from './images/yellow-candy.png'
 import blank from './images/blank.png'
+import ScoreBoard from './ScoreBoard';
 const width = 8;
 const candyColors = [blueCandy, greenCandy, orangeCandy, purpleCandy, redCandy, yellowCandy];
 
@@ -14,6 +15,7 @@ const App = () => {
   const [currentColorArrangement, setCurrentColorArrangement] = useState([]);
   const [squareBeingDragged, setSquareBeingDragged] = useState(null);
   const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
+  const [scoreDisplay, setScoreDisplay] = useState(0)
 
   const checkForColumnOfFour = () => {
     for (let i = 0; i <= 39; i++) {
@@ -22,9 +24,10 @@ const App = () => {
 
       if (
         columnOfFour.every(
-          (square) => currentColorArrangement[square] === decidedColor
+          (square) => currentColorArrangement[square] === decidedColor && (decidedColor !== blank)
         )
       ) {
+        setScoreDisplay((score) => score + 4 )
         columnOfFour.forEach(
           (square) => (currentColorArrangement[square] = blank)
         );
@@ -32,6 +35,8 @@ const App = () => {
       }
     }
   };
+
+  //console.log(scoreDisplay)
 
   const checkForRowOfFour = () => {
     for (let i = 0; i < 64; i++) {
@@ -46,9 +51,10 @@ const App = () => {
 
       if (
         rowOfFour.every(
-          (square) => currentColorArrangement[square] === decidedColor
+          (square) => currentColorArrangement[square] === decidedColor && (decidedColor !== blank)
         )
       ) {
+        setScoreDisplay((score) => score + 4 )
         rowOfFour.forEach((square) => (currentColorArrangement[square] = blank));
         return true;
       }
@@ -67,9 +73,10 @@ const App = () => {
 
       if (
         rowOfThree.every(
-          (square) => currentColorArrangement[square] === decidedColor
+          (square) => currentColorArrangement[square] === decidedColor && (decidedColor !== blank)
         )
       ) {
+        setScoreDisplay((score) => score + 3)
         rowOfThree.forEach((square) => (currentColorArrangement[square] = blank));
         return true;
       }
@@ -84,9 +91,10 @@ const App = () => {
 
       if (
         columnOfThree.every(
-          (square) => currentColorArrangement[square] === decidedColor
+          (square) => currentColorArrangement[square] === decidedColor && (decidedColor !== blank)
         )
       ) {
+        setScoreDisplay((score) => score + 3 )
         columnOfThree.forEach(
           (square) => (currentColorArrangement[square] = blank)
         );
@@ -97,6 +105,7 @@ const App = () => {
 
   const moveIntoSquareBelow = () => {
     for (let i = 0; i <= 55; i++) {
+
       const firstRow = [0, 1, 2, 3, 4, 5, 6, 7];
       const isFirstRow = firstRow.includes(i);
 
@@ -140,7 +149,7 @@ const App = () => {
       checkForRowOfThree();
       moveIntoSquareBelow();
       setCurrentColorArrangement([...currentColorArrangement]);
-    }, 300);
+    }, 1000);
     return () => clearInterval(timer);
   }, [
     checkForColumnOfFour,
@@ -152,18 +161,18 @@ const App = () => {
   ]);
 
   const dragStart = (e) => {
-    console.log(e.target);
-    console.log("drag start");
+    //console.log(e.target);
+    //console.log("drag start");
     setSquareBeingDragged(e.target);
   };
   const dragDrop = (e) => {
-    console.log(e.target);
-    console.log("drag drop");
+    //console.log(e.target);
+    //console.log("drag drop");
     setSquareBeingReplaced(e.target);
   };
   const dragEnd = (e) => {
-    console.log(e.target);
-    console.log("drag end");
+    //console.log(e.target);
+    //console.log("drag end");
 
     const squareBeingDraggedId = parseInt(
       squareBeingDragged.getAttribute("data-id")
@@ -199,7 +208,6 @@ const App = () => {
       validMove &&
       (isARowOfFour || isAColumnOfFour || isARowOfThree || isAColumnOfThree)
     ) {
-      console.log("siema");
       setSquareBeingDragged(null);
       setSquareBeingReplaced(null);
     } else {
@@ -211,8 +219,6 @@ const App = () => {
     }
   };
 
-  //console.log(currentColorArrangement);
-
   return (
     <div className="app">
       <div className="game">
@@ -220,7 +226,7 @@ const App = () => {
           <img
             key={index}
             src={candyColor}
-            alt={candyColor}
+            alt={index}
             data-id={index}
             draggable={true}
             onDragStart={dragStart}
@@ -232,6 +238,7 @@ const App = () => {
           />
         ))}
       </div>
+      <ScoreBoard score={scoreDisplay} />
     </div>
   );
 };
