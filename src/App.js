@@ -5,6 +5,8 @@ const candyColors = ["blue", "green", "orange", "purple", "red", "yellow"];
 
 const App = () => {
   const [currentColorArrangement, setCurrentColorArrangement] = useState([]);
+  const [squareBeingDragged, setSquareBeingDragged] = useState(null);
+  const [squareBeingReplaced, setSquareBeingReplaced] = useState(null);
 
   const checkForColumnOfFour = () => {
     for (let i = 0; i <= 39; i++) {
@@ -140,15 +142,22 @@ const App = () => {
   const dragStart = (e) => {
     console.log(e.target)
     console.log('drag start')
+    setSquareBeingDragged(e.target)
   }
   const dragDrop = (e) => {
     console.log(e.target)
     console.log('drag drop')
+    setSquareBeingReplaced(e.target)
   }
   const dragEnd = (e) => {
     console.log(e.target)
     console.log('drag end')
-  }
+
+    const squareBeingDraggedId = parseInt(squareBeingDragged.getAttribute('data-id'))
+    const squareBeingReplacedId = parseInt(squareBeingReplaced.getAttribute('data-id'))
+    console.log(squareBeingDraggedId)
+    console.log(squareBeingReplacedId)
+  } 
 
   //console.log(currentColorArrangement);
 
